@@ -72,8 +72,5 @@ sound(rxwav, 11025);
 
 disp('Plotting corrected audio')
 plot(rxwav)
-disp('Plotting bit differences in audio')
-figure()
-plot(abs(rxwav - data_t))
     
    
