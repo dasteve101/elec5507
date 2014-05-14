@@ -29,7 +29,7 @@ hDec = comm.LDPCDecoder(ldpc_h);
 
 % Go through perfect BPSK mod/demod - this is because the LDPC Decoder
 % requires log-likelihood ratios
-hMod = comm.PSKModulator(4, 'BitInput',true);
+hMod = comm.PSKModulator(4, 'BitInput',true); % Don't we want (2 ... for a BPSK?
 hDemod = comm.PSKDemodulator(4, 'BitOutput',true, ...
             'DecisionMethod','Approximate log-likelihood ratio');
 hError = comm.ErrorRate;
@@ -72,5 +72,8 @@ sound(rxwav, 11025);
 
 disp('Plotting corrected audio')
 plot(rxwav)
+disp('Plotting bit differences in audio')
+figure()
+plot(abs(rxwav - data_t))
     
    
