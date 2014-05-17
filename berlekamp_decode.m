@@ -67,12 +67,7 @@ for index = 1:length(rootToTry)
     end
 end
 
-if length(rootsOfSigma) < t
-    disp('This codeword cannot be corrected as no real roots')
-    decoded_data = data_to_decode;
-    error_locations = ones(1,length(data_to_decode));
-    return
-end
-
-locations = n - rootsOfSigma
-
+locations = n - rootsOfSigma;
+error_locations = zeros(1,length(data_to_decode));
+error_locations(locations) = ones(1,length(locations));
+decoded_data = mod(data_to_decode + error_locations,2);
