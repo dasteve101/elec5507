@@ -1,19 +1,26 @@
 % Plots coded and uncoded Eb/No given transition probabilities
 % and the code rate. Formulas given in project notes
-function plot_ebno(transition_prob, bers, code_rate)
+function plot_ebno(transition_prob, bers, uncoded_bers, code_rate)
     
-% Determine Eb/No for coded/uncoded
-    ebno_coded = 10*log10(((qfuncinv(transition_prob)).^2)/(code_rate));
-    ebno = 20*log10(qfuncinv(transition_prob))
-
+    % Replace zero's with episolon for plot-friendliness
+    bers(bers==0) = 10e-10;
+    uncoded_bers(uncoded_bers==0) = 10e-10;
+    
+    % Determine Eb/No for coded/uncoded
+    ebno_coded =  10*log10 (  (qfuncinv(transition_prob).^2) / (code_rate));
+    ebno = 20*log10(qfuncinv(transition_prob));
+    
     % Plot Eb/No vs for coded/uncoded
     figure
-    semilogy(ebno_coded, bers, 'r');
+    semilogy(ebno_coded(2:end-1), bers(2:end-1), 'g');
     hold on
-    semilogy(ebno, bers);
-    xlabel('Eb/No');
+    semilogy(ebno(2:end-1), uncoded_bers(2:end-1));
+    legend('Coded BSC', 'Uncoded BSC');
+    xlabel('Eb/No (dB)');
     ylabel('Bit Error Rate') 
     xlim([0 10])
-    legend('Coded', 'Uncoded');
+    ylim([10^-4 10^0]);
+    title('Bit Error Rate vs. Eb/No (dB) for LDPC code');
     hold off
+    
 end
