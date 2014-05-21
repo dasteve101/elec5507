@@ -18,8 +18,10 @@ codeword = gf(data_to_decode, m);
 % compute the syndromes
 S = gf(zeros(1,2*t), m);
 for index = 1:2*t
-    S(index) = codeword*(alpha.^(index.*(31:0)));
+     S(index) = codeword*(alpha.^(index.*fliplr(0:30)))';
 end
+%disp('Syndromes')
+%S
 
 % Based on textbook
 % discrepency_mu = one;
@@ -64,7 +66,7 @@ sigma = [one gf(zeros(1,(2*t - 1)), m)];
 D = [zero one gf(zeros(1,(2*t - 2)), m)];
 
 for n = 0:(2*t - 1)
-    discrepency = sum(fliplr(S((n-L + 1):(n + 1))).*sigma(1:(L + 1)));
+    discrepency = fliplr(S((n-L + 1):(n + 1)))*sigma(1:(L + 1))';
     if discrepency ~= 0
         sigma_star = sigma - discrepency*D;
         if L < n - k
@@ -81,15 +83,21 @@ end
 
 % Find roots of sigma
 rootsOfSigma = [];
-rootToTry = alpha.^(index.*(31:0));
+rootToTry = alpha.^(1:31);
 for index = 1:length(rootToTry)
     % if sum is zero then is root
-    if sum(sigma.*(rootToTry(index).^(0:(length(sigma) - 1)))) == 0
+    if sigma*(rootToTry(index).^(0:(length(sigma) - 1)))' == zero
         rootsOfSigma = [rootsOfSigma index];
     end
 end
-
-locations = n - rootsOfSigma; % inverse - but this won't work
+degree = find(sigma ~= zero);
+degree = degree(end);
 error_locations = zeros(1,length(data_to_decode));
+if length(rootsOfSigma) < (degree - 1)
+    disp('WARNING: Cannot correct more than 3 errors')
+    decoded_data = data_to_decode;
+    return
+end
+locations = rootsOfSigma; % inverse - but this won't work
 error_locations(locations) = ones(1,length(locations));
 decoded_data = mod(data_to_decode + error_locations,2);
