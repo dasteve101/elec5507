@@ -15,10 +15,7 @@ alpha = gf(2, m);
 codeword = gf(data_to_decode, m);
 
 % compute the syndromes
-S = gf(zeros(1,2*t), m);
-for index = 1:2*t
-     S(index) = codeword*(alpha.^(index.*fliplr(0:30)))';
-end
+S =  codeword*(alpha.^([1:2*t]'*fliplr(0:30)))';
 
 L = 0;
 k = -1;
@@ -54,7 +51,7 @@ degree = find(sigma ~= zero);
 degree = degree(end);
 error_locations = zeros(1,length(data_to_decode));
 if length(rootsOfSigma) < (degree - 1)
-    disp('WARNING: Cannot correct more than 3 errors')
+    % disp('WARNING: Cannot correct more than 3 errors')
     decoded_data = data_to_decode;
     data = decoded_data(16:end); % assuming a systematic code
     return

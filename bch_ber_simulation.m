@@ -3,21 +3,22 @@
 pValues = 0.001:0.001:10;
 snrValues = 0.001:0.001:10;
 repetitions = 100;
-messageLength = 1000;
+messageLength = 16;
 
-BER = [];
+BER = zeros(1,length(pValues));
 
-for p = pValues
+for k = 1:length(pValues)
+    p = pValues(k);
     averageBerrs = 0;
     for r = 1:repetitions
         msg = (rand(1, messageLength) > 0.5);
-        bch_encoded = 0; % TODO: BCH encode
+        bch_encoded = encoder(msg);
         errors = (rand(1,length(bch_encoded)) < p);
-        bch_decode = decodeMsg(mod(bch_encoded + errors, 2)); % TODO: BCH decode
+        bch_decode = berlekamp_decode(mod(bch_encoded + errors, 2));
         bitErrs = sum(mod(bch_decode + msg,2))/length(msg);
         averageBerrs = averageBerrs + bitErrs;
     end
-    BER = [BER (averageBerrs/repetitions)];
+    BER(k) = (averageBerrs/repetitions);
 end
 
 figure()
@@ -40,21 +41,22 @@ yaxis('BER');
 
 % section 1) q 8)b)
 
-BER = [];
+BER = zeros(1,length(snrValues));
 
-for s = snrValues
+for k = 1:length(snrValues)
+    s = snrValues(k);
     averageBerrs = 0;
     for r = 1:repetitions
         msg = (rand(1, messageLength) > 0.5);
-        bch_encoded = 0; % TODO: BCH encode
-	signal = 1 - 2*bch_encoded;
+        bch_encoded = encoder(msg);
+        signal = 1 - 2*bch_encoded;
         noise = randn(length(signal))*sqrt(1/s); % TODO: check conversion to snr, put in dB?
-	hard_dec = (signal + noise) < 0; % Hard decision on 0
-        bch_decode = decodeMsg(hard_dec); % TODO: BCH decode
+        hard_dec = (signal + noise) < 0; % Hard decision on 0
+        bch_decode = berlekamp_decode(hard_dec);
         bitErrs = sum(mod(bch_decode + msg,2))/length(msg);
         averageBerrs = averageBerrs + bitErrs;
     end
-    BER = [BER (averageBerrs/repetitions)];
+    BER(k) = (averageBerrs/repetitions);
 end
 
 figure()
