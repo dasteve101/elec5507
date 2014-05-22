@@ -1,4 +1,4 @@
-function [decoded_data, error_locations] = berlekamp_decode(data_to_decode)
+function [data, decoded_data, error_locations] = berlekamp_decode(data_to_decode)
 % http://www.mathworks.com.au/help/comm/ug/error-detection-and-correction.html
 
 % Parameters of n = 31, k = 16, t = 3 BCH
@@ -56,7 +56,9 @@ error_locations = zeros(1,length(data_to_decode));
 if length(rootsOfSigma) < (degree - 1)
     disp('WARNING: Cannot correct more than 3 errors')
     decoded_data = data_to_decode;
+    data = decoded_data(16:end); % assuming a systematic code
     return
 end
 error_locations(rootsOfSigma) = ones(1,length(rootsOfSigma));
 decoded_data = mod(data_to_decode + error_locations,2);
+data = decoded_data(16:end); % assuming a systematic code
