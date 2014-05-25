@@ -1,6 +1,6 @@
-function [data, decoded_data, error_locations] = berlekamp_decode(data_to_decode)
-% http://www.mathworks.com.au/help/comm/ug/error-detection-and-correction.html
-
+function [data, decoded_data, error_locations] = ...
+                    berlekamp_decode(data_to_decode)
+                    
 % Parameters of n = 31, k = 16, t = 3 BCH
 n = 31;
 t = 3;
