@@ -21,7 +21,7 @@ ylabel('BER');
 % Q(x) = 0.5 * ( 1 - erf(x/sqrt(2)))
 % Q^(-1)(x) = sqrt(2)*erfinv(1 - 2x)
 
-Xuncoded = 20*log10(1./(sqrt(2)*erfinv(1 - 2.*pValues)));
+Xuncoded = 20*log10(sqrt(2)*erfinv(1 - 2.*pValues));
 Xcoded = Xuncoded - 10*log10(16/31); % R = code Rate = k/n
 
 figure()
