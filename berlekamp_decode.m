@@ -48,9 +48,9 @@ for index = 1:length(rootToTry)
     end
 end
 degree = find(sigma ~= zero);
-degree = degree(end);
+degree = degree(end) - 1;
 error_locations = zeros(1,length(data_to_decode));
-if length(rootsOfSigma) < (degree - 1)
+if length(rootsOfSigma) < degree
     % disp('WARNING: Cannot correct more than 3 errors')
     decoded_data = data_to_decode;
     data = decoded_data(16:end); % assuming a systematic code

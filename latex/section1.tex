@@ -6,14 +6,17 @@
 
 \begin{document}
 
+\title{ELEC5507 Assignment}
+\author{Vanush Vaswani - *********, Liu Vic - *********, Stephen Tridgell - 309205867}
+
+\maketitle
+
+
 \lstset{language=Matlab}
 
-\section*{Section 1}
+The goal of error control coding is to encode messages for transmission with redundancy such that the receiver can correct the errors in the transmission and recover the original data. In this project, encoders and decoders will be simulated and analysed by using MATLAB. The first section involves the design and simulation of the BCH code over BSC and AWGN channels. The second section uses LDPC encoding to meet the requirements of a project. Similar simulations are run and compared with the results of the BCH code.
 
-The main goal of error control coding is to encode original messages for channel transmission with errors, and the receiver can correct the error bits and recover the original messages.
-In this project, the state-of-art forward error correcting (FEC) encoders and decoders will be simulated and analysed by using MATLAB. 
-In Section I, the BCH code will be designed and simulated over BSC and AWGN channels, and BCH encoder and decoder will be used to analyse the sound file (austinpowers.wav). After that, the coding gain of BER will be obtained for coded and uncoded systems.
-In section II ...
+\section*{Section 1}
 
 \subsubsection*{Question 1} \textit{What is the generator polynomial for this code? Use MATLAB’s ’bchgenpoly’ function to verify your answer} \\
 \\
@@ -62,46 +65,39 @@ The corresponding syndromes for these error patterns are:\\
 \hline
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & = & \textbf{0}  \\
 \hline
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & = & \textbf{1}  \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} & = & \textbf{1}  \\
 \hline
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & = & \textbf{2}  \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} & 0 & = & \textbf{2}  \\
 \hline
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & = & \textbf{3}  \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} & \textbf{1} & = & \textbf{3}  \\
 \hline
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & = & \textbf{4}  \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} & 0 & 0 & = & \textbf{4}  \\
 \hline
-\end{tabular}
+\end{tabular}\\
+\\
+The rest of the array is in "trt.csv".
 
-\subsubsection*{Question 4} \textit{Based on the standard array you obtained in task 3, find out the weight distribution of the coset leaders.}\\
+\subsubsection*{Question 4} \textit{Based on the standard array you obtained in task 3, find out the weight distribution of the coset leaders.}
 \begin{lstlisting}
 weights = sum(trt')
-sum(weights == 0)
-sum(weights == 1)
-sum(weights == 2)
-sum(weights == 3)
-sum(weights == 4)
-sum(weights == 5)
+A0 = sum(weights == 0)
+A1 = sum(weights == 1)
+A2 = sum(weights == 2)
+A3 = sum(weights == 3)
+A4 = sum(weights == 4)
+A5 = sum(weights == 5)
 \end{lstlisting}
-
-Gives the weight distribution:
-\begin{align*}
-A_0 &= 1 \\
-A_1 &= 31 \\
-A_2 &= 465 \\
-A_3 &= 4495 \\
-A_4 &= 13020 \\
-A_5 &= 14756
-\end{align*}
+Gives the weight distribution of $A_0 = 1$, $A_1 = 31$, $A_2 = 465$, $A_3 = 4495$, $A_4 = 13020$ and $A_5 = 14756$ where $A_i$ is the number of weight $i$ errors.
 
 \subsubsection*{Question 5} \textit{Design and implement an encoder using the generator polynomial for this BCH code.} \\
 \\
-The encoder with the generator polynomial was implemented using the cyclic properties of the code. The message ($c(X)$) is shifted by $n-k$ and divided by the generator polynomial to get the parity check bits by $b(X) = remainder[\frac{X^{n-k}c(X)}{g(X)}]$. The parity check bits are combined with the message for a systematic code. The function below shows our implementation.
+The encoder with the generator polynomial was implemented using the cyclic properties of the code. The message, $c(X)$, is shifted by $n-k$ and divided by the generator polynomial to get the parity check bits by $b(X) = remainder[\frac{X^{n-k}c(X)}{g(X)}]$. The parity check bits are combined with the message for a systematic code. The function below shows our implementation.
 
 \lstinputlisting[language=Matlab]{../polBCHencoder.m}
 
 \subsubsection*{Question 6a} \textit{Use MATLAB defined functions (eg. the ”decode” function) to decode the BCH code.}\\
 \\
-This decoder is implemented using MATLAB’s function ‘decode’. ‘trt' is the syndrome decoding table calculated above using the \textit{syndtable()} function.
+This decoder is implemented using MATLAB’s function \textit{decode()}. The matrix \textit{trt} is the syndrome decoding table calculated above using the \textit{syndtable()} function.
 
 \lstinputlisting[language=Matlab]{../matlabBCHdecode.m}
 
@@ -117,9 +113,13 @@ The implementation of berlekamps iterative procedure below used different notati
 
 \lstinputlisting[language=Matlab]{../berlekamp_decode.m}
 
-\subsubsection*{Question 7} \textit{Simulate the implemented BCH encoder and decoder (using ANY method in Part 6) using the attached wave file (austinpowers.wav) in a BSC channel for different transition probabilities. Discuss the impact of changing different transition probability values.}
+\subsubsection*{Question 7} \textit{Simulate the implemented BCH encoder and decoder (using ANY method in Part 6) using the attached wave file (austinpowers.wav) in a BSC channel for different transition probabilities. Discuss the impact of changing different transition probability values.}\\
+\\
+The channel was simulated using the following function:
 
 \lstinputlisting[language=Matlab]{../playAudioOverBSC.m}
+
+Different transition probabilities were input into the function. As p increased ...
 
 \subsubsection*{Question 8a and 8b} \textit{Simulation over BSC Simulate the BCH code in a BSC channel (you are allowed to use MATLAB defined functions) and plot the BER versus transition probability for coded and uncoded systems on the same graph. Plot BER versus $\frac{E_b}{N_0}$ for coded and uncoded systems on the same graph by assuming that the SNR ($ = \frac{E_b}{N_0}$ ) is related to the transition probability for the coded system via $X_{dB,coded} = 10 \log_{10}(\frac{[Q^{−1} (p)]^2}{R}) $ and that for uncoded system is $X_{dB,uncoded} = 20\log_{10}(Q^{−1} (p)) $, where $Q(x) = \frac{1}{\sqrt{2 \pi}} \int\limits_{x}\limits^{+\infty} e^{ -\frac{z^2}{2}} dz $ and $0 < p < 0.5$.}\\
 \textit{Simulation over AWGN channel with BPSK modulation ($\{−1, 1\}$) Simulate the BCH code in an AWGN channel (you are allowed to use MATLAB defined functions) and plot the BER versus the signal to noise ratio (SNR) for a BPSK coded and uncoded systems on the same graph by using a hard-decision demodulator and binary decoder.}\\

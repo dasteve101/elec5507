@@ -1,6 +1,7 @@
 function playAudioOverBSC(pVal)
 [data, Fs] = wavread('austinpowers.wav', 'native');
 data = de2bi(data);
+% add a row of zeros as it is not divisible by 16
 data = double(reshape([data; zeros(1,8)],[],16));
 errors = rand(length(data),31) < pVal;
 encoded_data = mod(encoder(data) + errors,2);
