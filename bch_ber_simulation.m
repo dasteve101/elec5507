@@ -1,8 +1,8 @@
 % simulations section 1) part 8)
 % Find the BER over a BCH code
 pValues = 0.001:0.001:0.5;
-snrValues = 0.001:0.001:10;
-repetitions = 100;
+snrValues = -5:0.001:10;
+repetitions = 500;
 
 msg = rand(length(pValues)*repetitions, 16) > 0.5;
 errors = rand(length(msg), 31) < ...
@@ -22,11 +22,11 @@ ylabel('BER');
 % Q(x) = 0.5 * ( 1 - erf(x/sqrt(2)))
 % Q^(-1)(x) = sqrt(2)*erfinv(1 - 2x)
 
-Xuncoded = 20*log10(sqrt(2)*erfinv(1 - 2.*pValues));
-Xcoded = Xuncoded - 10*log10(16/31); % R = code Rate = k/n
+Xuncoded = 20.*log10(sqrt(2).*erfinv(1 - 2.*pValues));
+Xcoded = Xuncoded - 10.*log10(16/31); % R = code Rate = k/n
 
 figure()
-plot(Xuncoded, BER, Xcoded, BER, '-r');
+plot([Xuncoded; Xcoded], BER);
 title('Plot of BER in BCH codes in a BSC');
 legend('Uncoded', 'Coded');
 xlabel('SNR');
@@ -40,9 +40,9 @@ bch_encoded = encoder(msg);
 noise = randn(length(bch_encoded), 31).* ...
       repmat(reshape(repmat(10.^(-snrValues./20),repetitions,1) ...
              ,1,[])',1,31); 
-signal = 1 - 2*bch_encoded;
+signal = 1 - 2.*bch_encoded;
 bch_decoded = matlabBCHdecode((signal + noise) < 0); % Hard decision on 0
-bitErrs = reshape((sum(mod(bch_decoded' + msg',2))/16)', repetitions, []);
+bitErrs = reshape((sum(mod(bch_decoded' + msg',2))./16)', repetitions, []);
 BER = sum(bitErrs)/length(bitErrs); % take the average
 
 figure()
