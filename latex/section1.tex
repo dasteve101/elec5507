@@ -7,14 +7,16 @@
 \begin{document}
 
 \title{ELEC5507 Assignment}
-\author{Vanush Vaswani - *********, Liu Vic - *********, Stephen Tridgell - 309205867}
+\author{Vanush Vaswani - ********* \\
+Zhaoyan Liu - 440092733 \\
+Stephen Tridgell - 309205867}
 
 \maketitle
 
 
 \lstset{language=Matlab}
 
-The goal of error control coding is to encode messages for transmission with redundancy such that the receiver can correct the errors in the transmission and recover the original data. In this project, encoders and decoders will be simulated and analysed by using MATLAB. The first section involves the design and simulation of the BCH code over BSC and AWGN channels. The second section uses LDPC encoding to meet the requirements of a project. Similar simulations are run and compared with the results of the BCH code.
+The goal of error control coding is to encode messages for transmission with redundancy such that the receiver can correct the errors in the transmission and recover the original data. In this project, encoders and decoders will be simulated and analysed by using MATLAB. The first section involves the design and simulation of the BCH code over BSC and AWGN channels. The second section uses LDPC codes to meet the requirements of a power limited system with very high reliability. Similar simulations are run and compared with the results of the BCH code.
 
 \section*{Section 1}
 
@@ -31,7 +33,7 @@ This was verified with
 \\
 For a BCH code, $d_{min} \geq 2*t + 1 = 7$, this was verified using 
 \begin{lstlisting}
-gfweight(gen, 31)
+gfweight(double(gen.x), 31)
 \end{lstlisting}
 which gave a minimum distance calculation of 7.
 
@@ -39,7 +41,7 @@ which gave a minimum distance calculation of 7.
 \\
 Generate the syndrome lookup table by:
 \begin{lstlisting}
-[h g k] = cyclgen(31, gen)
+[h g k] = cyclgen(31, double(gen.x))
 trt = syndtable(h)
 \end{lstlisting}
 
@@ -119,14 +121,18 @@ The channel was simulated using the following function:
 
 \lstinputlisting[language=Matlab]{../playAudioOverBSC.m}
 
-Different transition probabilities were input into the function. As p increased ...
+Different transition probabilities were input into the function. With a transition probability of below 0.05 the sound could be heard with a little noise audible. As p increased above 0.15 the noise increased to the level where it could no longer be clearly heard. Above 0.2 it was difficult to hear anything at all other than noise.
 
-\subsubsection*{Question 8a and 8b} \textit{Simulation over BSC Simulate the BCH code in a BSC channel (you are allowed to use MATLAB defined functions) and plot the BER versus transition probability for coded and uncoded systems on the same graph. Plot BER versus $\frac{E_b}{N_0}$ for coded and uncoded systems on the same graph by assuming that the SNR ($ = \frac{E_b}{N_0}$ ) is related to the transition probability for the coded system via $X_{dB,coded} = 10 \log_{10}(\frac{[Q^{−1} (p)]^2}{R}) $ and that for uncoded system is $X_{dB,uncoded} = 20\log_{10}(Q^{−1} (p)) $, where $Q(x) = \frac{1}{\sqrt{2 \pi}} \int\limits_{x}\limits^{+\infty} e^{ -\frac{z^2}{2}} dz $ and $0 < p < 0.5$.}\\
-\textit{Simulation over AWGN channel with BPSK modulation ($\{−1, 1\}$) Simulate the BCH code in an AWGN channel (you are allowed to use MATLAB defined functions) and plot the BER versus the signal to noise ratio (SNR) for a BPSK coded and uncoded systems on the same graph by using a hard-decision demodulator and binary decoder.}\\
+\subsubsection*{Question 8a and 8b} \textit{Simulation over BSC Simulate the BCH code in a BSC channel (you are allowed to use MATLAB defined functions) and plot the BER versus transition probability for coded and uncoded systems on the same graph. Plot BER versus $\frac{E_b}{N_0}$ for coded and uncoded systems on the same graph by assuming that the SNR ($ = \frac{E_b}{N_0}$ ) is related to the transition probability for the coded system via $X_{dB,coded} = 10 \log_{10}(\frac{[Q^{- 1} (p)]^2}{R}) $ and that for uncoded system is $X_{dB,uncoded} = 20\log_{10}(Q^{- 1} (p)) $, where $Q(x) = \frac{1}{\sqrt{2 \pi}} \int\limits_{x}\limits^{+\infty} e^{ -\frac{z^2}{2}} dz $ and $0 < p < 0.5$.}\\
+\textit{Simulation over AWGN channel with BPSK modulation $\{−1, 1\}$ Simulate the BCH code in an AWGN channel (you are allowed to use MATLAB defined functions) and plot the BER versus the signal to noise ratio (SNR) for a BPSK coded and uncoded systems on the same graph by using a hard-decision demodulator and binary decoder.}\\
 \\
 \lstinputlisting[language=Matlab]{../bch_ber_simulation.m}
 
-This produced the following graphs ... \\
+This produced the following plots. \\
+\includegraphics[scale=0.5]{plotBER_BSC_pvals.jpg} \\
+\includegraphics[scale=0.5]{plotBER_BSC_SNR.jpg} \\
+\includegraphics[scale=0.5]{plotBER_AWGN.jpg} \\
+\textbf{TODO: RESAVE AWGN plot} 
 
 \subsubsection*{Question 8c} \textit{Draw a table detailing the coding gain for BER$= [10^{−2}, 10^{−3}, 10^{−4} , 10^{−5} , 10^{−6} ]$ by reading the differences between the BER curves for BPSK coded and uncoded systems which have been obtained from simulations in part (a) and (b).} \\
 \\
@@ -148,7 +154,7 @@ $10^{-6}$ & & \\
 
 \subsubsection*{Question 8d} \textit{Find the asymptotic coding gain when $\frac{Eb}{N0}$ is very large from the formula which is given in the lecture notes and compare with simulation results.} \\
 \\
-Answer here \\
+Using the formula $G = 10\log(R(t+1))$ in lecture 5 for large $\frac{Eb}{N0}$ where $R = 16/31$ and $t = 3$ results in a coding gain of $G = 3.1482$ dB. Comparing this to the simulation results \textbf{...} \\
 
 \section*{Section 2}
 
