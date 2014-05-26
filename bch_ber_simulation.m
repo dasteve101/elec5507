@@ -5,7 +5,8 @@ snrValues = 0.001:0.001:10;
 repetitions = 100;
 
 msg = rand(length(pValues)*repetitions, 16) > 0.5;
-errors = rand(length(msg), 31) < repmat(reshape(repmat(pValues,repetitions,1),1,[])',1,31);
+errors = rand(length(msg), 31) < ...
+        repmat(reshape(repmat(pValues,repetitions,1),1,[])',1,31);
 bch_encoded = encoder(msg);
 
 bch_decoded = matlabBCHdecode(mod(bch_encoded + errors, 2));
@@ -33,10 +34,12 @@ ylabel('BER');
 
 % section 1) q 8)b)
 
-% TODO: check conversion to snr, put in dB? sqrt(1./snrValues)?
+% SNR = 10*log10((1/ampl)^2), ampl = 10^(-SNR/20)
 msg = rand(length(snrValues)*repetitions, 16) > 0.5;
 bch_encoded = encoder(msg);
-noise = randn(length(bch_encoded), 31).*repmat(reshape(repmat(sqrt(1./snrValues),repetitions,1),1,[])',1,31); 
+noise = randn(length(bch_encoded), 31).* ...
+      repmat(reshape(repmat(10.^(-snrValues./20),repetitions,1) ...
+             ,1,[])',1,31); 
 signal = 1 - 2*bch_encoded;
 bch_decoded = matlabBCHdecode((signal + noise) < 0); % Hard decision on 0
 bitErrs = reshape((sum(mod(bch_decoded' + msg',2))/16)', repetitions, []);
