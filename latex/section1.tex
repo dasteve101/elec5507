@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{cite}
 \usepackage{times}
+\usepackage{float}
 
 \begin{document}
 
@@ -15,9 +16,10 @@ Zhaoyan Liu - 440092733 \\
 Stephen Tridgell - 309205867}
 
 \maketitle
-
+\newpage
 \tableofcontents
 \listoffigures
+\listoftables
 
 
 \lstset{language=Matlab, frame=single, breaklines=true, keepspaces=true, columns=flexible, basicstyle=\ttfamily\footnotesize}
@@ -28,14 +30,16 @@ Stephen Tridgell - 309205867}
 
 The goal of error control coding is to encode messages for transmission with redundancy such that the receiver can correct the errors in the transmission and recover the original data. In this project, encoders and decoders will be simulated and analysed by using MATLAB. The first section involves the design and simulation of the BCH code over BSC and AWGN channels. The second section uses LDPC codes to meet the requirements of a power limited system with very high reliability. Similar simulations are run and compared with the results of the BCH code.
 
-\section{Theoretical background}
+%\section{Theoretical background of error-control coding}
 
-blah blah blah \\
+%blah blah blah \\
 
-\part*{BCH code}
-\addcontentsline{toc}{part}{BCH code}
+\part*{Section I - BCH code}
+\addcontentsline{toc}{part}{Section I - BCH code}
 
-\section{Introduction}
+\section{Analysis}
+
+\subsection{Background}
 
 Basics of BCH code  \\
 
@@ -79,6 +83,7 @@ trt = syndtable(h)
 The first 5 rows are:\\
 \scalebox{0.7}{
 \begin{tabular}{| *{31}{c} |}
+
 \hline
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
 \hline
@@ -159,19 +164,19 @@ Different transition probabilities were input into the function. With a transiti
 
 The plots for different p-values are shown below as a qualitative indicator of noise levels.
 
-\begin{figure}[hbtp]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{plots/audio_over_bsc_bch_p_001.png}
 \caption{BCH Audio over BSC (p = 0.01)}
 \end{figure}
 
-\begin{figure}[hbtp]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{plots/audio_over_bsc_bch_p_005.png}
 \caption{BCH Audio over BSC (p = 0.05)}
 \end{figure}
 
-\begin{figure}[hbtp]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{plots/audio_over_bsc_bch_p_010.png}
 \caption{BCH Audio over BSC (p = 0.1)}
@@ -185,13 +190,30 @@ The plots for different p-values are shown below as a qualitative indicator of n
 \lstinputlisting[language=Matlab]{../bch_ber_simulation.m}
 
 This produced the following plots. \\
+\begin{figure}[H]
+\centering
 \includegraphics[scale=0.5]{plotBER_BSC_pvals.jpg} \\
-\includegraphics[scale=0.5]{plotBER_BSC_SNR.jpg} \\
-\includegraphics[scale=0.5]{plotBER_AWGN.jpg} \\
+\caption{Bit Error Rate vs. transition probability for BCH over BSC}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{plotBER_BSC_SNR.jpg}
+\caption{Bit Error Rate vs. SNR for BCH over BSC}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{plotBER_AWGN.jpg} 
+\caption{Bit Error Rate vs. SNR for BCH over AWGN}
+\end{figure}
 \textbf{TODO: RESAVE AWGN plot} 
 
 \subsubsection{Question 8c} \textit{Draw a table detailing the coding gain for BER$= [10^{−2}, 10^{−3}, 10^{−4} , 10^{−5} , 10^{−6} ]$ by reading the differences between the BER curves for BPSK coded and uncoded systems which have been obtained from simulations in part (a) and (b).} \\
 \\
+
+\begin{table}
+\centering
 \begin{tabular}{| c | c | c |}
 \hline
 BER & Coding Gain (Hard decision) & Coding Gain (BSC) \\
@@ -206,7 +228,10 @@ $10^{-5}$ & & \\
 \hline
 $10^{-6}$ & & \\
 \hline
+
 \end{tabular}
+\caption{Coding gain for BCH}
+\end{table}
 
 \subsubsection{Question 8d} \textit{Find the asymptotic coding gain when $\frac{Eb}{N0}$ is very large from the formula which is given in the lecture notes and compare with simulation results.} \\
 \\
@@ -223,18 +248,35 @@ Answer here \\
 \hrulefill
 \newpage
 
-\section{Section 2}
+\part*{Section II - LDPC}
+\addcontentsline{toc}{part}{Section II - LDPC}
 
-\textit{You are an engineer whose job is to design and analyze the performance of error control codes for different clients. Client 2 requires a code for satellite transmission of digital TV. The satellite is power limited and very high reliability is required (as close to Shannon capacity as possible). Low decoding complexity is desired, but is not essential.} \\
-\\
-\subsubsection{Question 1} \textit{Design the code (e.g. type of code, code parameters, and other relevant information) and justify its design}\\
-\\
+
+\section{Analysis}
+\subsection{Background}
+Basics of LDPC 
+
+\subsection{LDPC Coding and Decoding using MATLAB Communications Toolbox}
+
+\subsubsection{Design}
+
+ Blah blah blah 
+ 
+\subsubsection{Implementation}
+
+See below. ..hahaa sadas
+ 
+\subsection{Calculations and Results}
+
+\textit{You are an engineer whose job is to design and analyze the performance of error control codes for different clients. Client 2 requires a code for satellite transmission of digital TV. The satellite is power limited and very high reliability is required (as close to Shannon capacity as possible). Low decoding complexity is desired, but is not essential.} 
+\subsubsection{Question 1} \textit{Design the code (e.g. type of code, code parameters, and other relevant information) and justify its design}
+
 
 %% ANSWER 
 %% ======
 To meet these requirements an LDPC code is used
 
-For client 2, it is clear that an LDPC code will be necessary and these can provide performance that is close to the Shannon limit for an AWGN channel. 
+For client 2, it is clear that an LDPC code will be necessary and these can provide performance that is close to the Shannon limit for an AWGN channel, compared to other modern codes. However, it is known that this is the case for very long block codes, which require computationally complex [TODOREF].
 An existing solution for digital satellite television is present in the DVB-S2
 standard, which uses LDPC as part of concatenated code with BCH coding\cite{morello2006dvb}. However,
 the drawback of this scheme is the high decoding complexity, though this can be 
@@ -242,6 +284,8 @@ reduced somewhat by the special structure of the code [TODOREF]. Another factor 
 is the (1152, 2304) LDPC block code used in IEEE-802.16-2005, also known as WiMax [TODOREF]. This code is also irregular, which is known to exhibit superior performance over regular LDPC codes.
 
 TODO: Expand on justification, summarize into table
+
+\subsection{Sound analysis}
 
 \subsubsection{Question 2} \textit{Simulate the chosen code using the attached wave file (austinpowers.wav) in a BSC channel for different transition probabilities (you are allowed to use MATLAB defined functions. Discuss the difference in sound quality compared to the BCH code in Section I, for different transition probabilities.}\\
 \\
@@ -251,55 +295,86 @@ TODO: Expand on justification, summarize into table
 
 The code was simulated for the transition probabilities p = \{0.01, 0.05, 0.1\}. As a qualitative tool, plots of the waveform are included. Figures 1-3 provide a visual indicator of the noise. \\
 
-\begin{figure}[hbtp]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{plots/audio_over_bsc_ldpc_p_001.png}
 \caption{LDPC Audio over BSC (p = 0.01)}
 \end{figure}
 
-\begin{figure}[hbtp]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{plots/audio_over_bsc_ldpc_p_005.png}
 \caption{LDPC Audio over BSC (p = 0.05)}
 \end{figure}
 
-\begin{figure}[hbtp]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{plots/audio_over_bsc_ldpc_p_010.png}
 \caption{LDPC Audio over BSC (p = 0.1)}
 \end{figure}
 
-As the bit errors increase due to the transition probability, the noise becomes more prevalent. However, it is improved in the case of p = 0.05, showing LDPC has superior performance in this regard compared with BCH. However, there is not much difference in the case of p = 0.1, showing that the code has reached it's performance limitation for the particular channel, which is due to effective hard-decision decoding that is involved in a BSC channel. TODO: is it?
+As the bit errors increase due to the transition probability, the noise becomes more prevalent. However, it is improved relative to BCH in the case of p = 0.05, showing LDPC has superior performance in this regard compared with BCH. However, there is not much difference in the case of p = 0.1, showing that the code has reached it's performance limitation for the particular channel, which is due to effective hard-decision decoding that is involved in a BSC channel. TODO: is it?
 
-\subsubsection{Question 3a}\textit{Simulate the chosen code in a BSC channel (you are allowed to use MATLAB defined functions) and plot the BER versus transition probability for coded and uncoded systems on the same graph. Plot BER versus $\frac{E_b}{N_0}$ for coded and uncoded systems on the same graph by assuming that the SNR ($ = \frac{E_b}{N_0}$ ) is related to the transition probability for the coded system via $X_{dB,coded} = 10 \log_{10}(\frac{[Q^{−1} (p)]^2}{R}) $ and that for uncoded system is $X_{dB,uncoded} = 20\log_{10}(Q^{−1} (p)) $, where $Q(x) = \frac{1}{\sqrt{2 \pi}} \int\limits_{x}\limits^{+\infty} e^{ -\frac{z^2}{2}} dz $ and $0 < p < 0.5$.} \\
-\\
-Answer here \\
+\subsubsection{Question 3a}\textit{Simulate the chosen code in a BSC channel (you are allowed to use MATLAB defined functions) and plot the BER versus transition probability for coded and uncoded systems on the same graph. Plot BER versus $\frac{E_b}{N_0}$ for coded and uncoded systems on the same graph by assuming that the SNR ($ = \frac{E_b}{N_0}$ ) is related to the transition probability for the coded system via $X_{dB,coded} = 10 \log_{10}(\frac{[Q^{−1} (p)]^2}{R}) $ and that for uncoded system is $X_{dB,uncoded} = 20\log_{10}(Q^{−1} (p)) $, where $Q(x) = \frac{1}{\sqrt{2 \pi}} \int\limits_{x}\limits^{+\infty} e^{ -\frac{z^2}{2}} dz $ and $0 < p < 0.5$.}
 
-\subsubsection{Question 3b} \textit{Simulate the chosen code in an AWGN channel (you are allowed to use MATLAB defined functions) and plot the BER versus the signal to noise ratio (SNR) for a BPSK coded and uncoded systems on the same graph by using a hard-decision demodulator and binary decoder. Simulate the chosen code in an AWGN channel and plot the BER versus SNR on the same graph for a BPSK coded system by using a soft-decision decoder.} \\
-\\
-Answer here \\
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{plots/ber_vs_p_ldpc.png}
+\caption{BER vs transition probability for LDPC over BSC}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{plots/ber_vs_ebno_ldpc.png}
+\caption{BER vs EbNo for LDPC over BSC}
+\end{figure}
+
+
+\subsection{BER analysis}
+
+\subsubsection{Question 3b} \textit{Simulate the chosen code in an AWGN channel (you are allowed to use MATLAB defined functions) and plot the BER versus the signal to noise ratio (SNR) for a BPSK coded and uncoded systems on the same graph by using a hard-decision demodulator and binary decoder. Simulate the chosen code in an AWGN channel and plot the BER versus SNR on the same graph for a BPSK coded system by using a soft-decision decoder.}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{plots/ber_vs_ebno_ldpc_awgn_hard.png}
+\caption{BER vs EbNo for Hard-decision demod and decoding (LDPC - AWGN)}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{plots/ber_vs_ebno_ldpc_awgn_soft.png}
+\caption{BER vs EbNo for Soft-decision demod and decoding (LDPC - AWGN)}
+\end{figure}
+
 
 \subsubsection{Question 3c} \textit{Draw a table detailing the coding gain for BER$= [10^{−2}, 10^{−3}, 10^{−4} , 10^{−5} , 10^{−6} ]$ by reading the differences between the BER curves for BPSK coded and uncoded systems which have been obtained from simulations in part (a) and (b).}\\
 \\
-\begin{tabular}{| c | c | c |}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{| c | c | c | c |}
 \hline
-BER & Coding Gain (Hard decision) & Coding Gain (BSC) \\
+BER &  Coding Gain (Hard decision) & Coding Gain (Soft decision)  & Coding Gain (BSC\\
 \hline
-$10^{-2}$ & & \\
+$10^{-2}$ & & & \\
 \hline
-$10^{-3}$ & & \\
+$10^{-3}$ & & & \\
 \hline
-$10^{-4}$ & & \\
+$10^{-4}$ & & & \\
 \hline
-$10^{-5}$ & & \\
+$10^{-5}$ & & & \\
 \hline
-$10^{-6}$ & & \\
+$10^{-6}$ & & & \\
 \hline
 \end{tabular}
+\caption{Coding gain for LDPC}
+\end{table}
 
 \subsubsection{Question 3d} \textit{Find the asymptotic coding gain when $\frac{Eb}{N0}$ is very large from the formula which is given in the lecture notes and compare with simulation results.} \\
 \\
 Answer here \\
+
+\subsection{Discussion}
 
 \subsubsection{Question 4} \textit{Discuss the advantages/disadvantages of the code chosen in this section with the BCH code in Section 1 (eg. complexity, coding gain, efficiency)}\\
 \\
