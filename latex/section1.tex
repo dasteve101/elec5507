@@ -4,6 +4,7 @@
 \usepackage{listings}
 \usepackage{amsmath}
 \usepackage{cite}
+\usepackage{times}
 
 \begin{document}
 
@@ -22,11 +23,33 @@ Stephen Tridgell - 309205867}
 \lstset{language=Matlab, frame=single, breaklines=true, keepspaces=true, columns=flexible, basicstyle=\ttfamily\footnotesize}
 \newpage
 
-\section{Introduction}
+\part*{Project Introduction}
+\addcontentsline{toc}{part}{Project Introduction}
 
 The goal of error control coding is to encode messages for transmission with redundancy such that the receiver can correct the errors in the transmission and recover the original data. In this project, encoders and decoders will be simulated and analysed by using MATLAB. The first section involves the design and simulation of the BCH code over BSC and AWGN channels. The second section uses LDPC codes to meet the requirements of a power limited system with very high reliability. Similar simulations are run and compared with the results of the BCH code.
 
-\section{Section 1}
+\section{Theoretical background}
+
+blah blah blah \\
+
+\part*{BCH code}
+\addcontentsline{toc}{part}{BCH code}
+
+\section{Introduction}
+
+Basics of BCH code  \\
+
+\subsection{Implementation of BCH Decoder using Berlekamp's algorithm}
+
+\subsubsection{Design}
+
+ Blah blah blah \\
+ 
+\subsubsection{Implementation}
+
+See below. ..hahaa \\
+ 
+\subsection{Calculations and Results}
 
 \subsubsection{Question 1} \textit{What is the generator polynomial for this code? Use MATLAB’s ’bchgenpoly’ function to verify your answer} \\
 \\
@@ -123,12 +146,13 @@ The implementation of Berlekamp's iterative procedure below used different notat
 
 \lstinputlisting[language=Matlab]{../berlekamp_decode.m}
 
+\subsection{Sound analysis}
+
 \subsubsection{Question 7} \textit{Simulate the implemented BCH encoder and decoder (using ANY method in Part 6) using the attached wave file (austinpowers.wav) in a BSC channel for different transition probabilities. Discuss the impact of changing different transition probability values.}\\
 \\
 The channel was simulated using the following function:
 
 \lstinputlisting[language=Matlab]{../playAudioOverBSC.m}
-
 
 
 Different transition probabilities were input into the function. With a transition probability of below 0.05 the sound could be heard with a little noise audible. As p increased above 0.15 the noise increased to the level where it could no longer be clearly heard. Above 0.2 it was difficult to hear anything at all other than noise.
@@ -152,6 +176,8 @@ The plots for different p-values are shown below as a qualitative indicator of n
 \includegraphics[scale=0.5]{plots/audio_over_bsc_bch_p_010.png}
 \caption{BCH Audio over BSC (p = 0.1)}
 \end{figure}
+
+\subsection{BER analysis}
 
 \subsubsection{Question 8a and 8b} \textit{Simulation over BSC Simulate the BCH code in a BSC channel (you are allowed to use MATLAB defined functions) and plot the BER versus transition probability for coded and uncoded systems on the same graph. Plot BER versus $\frac{E_b}{N_0}$ for coded and uncoded systems on the same graph by assuming that the SNR ($ = \frac{E_b}{N_0}$ ) is related to the transition probability for the coded system via $X_{dB,coded} = 10 \log_{10}(\frac{[Q^{- 1} (p)]^2}{R}) $ and that for uncoded system is $X_{dB,uncoded} = 20\log_{10}(Q^{- 1} (p)) $, where $Q(x) = \frac{1}{\sqrt{2 \pi}} \int\limits_{x}\limits^{+\infty} e^{ -\frac{z^2}{2}} dz $ and $0 < p < 0.5$.}\\
 \textit{Simulation over AWGN channel with BPSK modulation $\{−1, 1\}$ Simulate the BCH code in an AWGN channel (you are allowed to use MATLAB defined functions) and plot the BER versus the signal to noise ratio (SNR) for a BPSK coded and uncoded systems on the same graph by using a hard-decision demodulator and binary decoder.}\\
@@ -186,6 +212,10 @@ $10^{-6}$ & & \\
 \\
 Using the formula $G = 10\log(R(t+1))$ in lecture 5 for large $\frac{Eb}{N0}$ where $R = 16/31$ and $t = 3$ results in a coding gain of $G = 3.1482$ dB. Comparing this to the simulation results \textbf{...} \\
 
+\section{Discussion}
+
+Answer here \\
+
 % =========
 % SECTION 2
 % =========
@@ -216,7 +246,10 @@ TODO: Expand on justification, summarize into table
 \subsubsection{Question 2} \textit{Simulate the chosen code using the attached wave file (austinpowers.wav) in a BSC channel for different transition probabilities (you are allowed to use MATLAB defined functions. Discuss the difference in sound quality compared to the BCH code in Section I, for different transition probabilities.}\\
 \\
 
-The code was simulated for the transition probabilities p = \{0.01, 0.05, 0.1\}. As a qualitative tool, plots of the waveform are included. Figures 1-3 provide a visual indicator of the noise. 
+%% ANSWER 
+%% ======
+
+The code was simulated for the transition probabilities p = \{0.01, 0.05, 0.1\}. As a qualitative tool, plots of the waveform are included. Figures 1-3 provide a visual indicator of the noise. \\
 
 \begin{figure}[hbtp]
 \centering
