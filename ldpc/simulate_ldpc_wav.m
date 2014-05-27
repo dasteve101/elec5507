@@ -5,7 +5,7 @@
 load ldpc_h
 ldpc_h = sparse(ldpc_h);
 
-bsc_p = 0.05;
+bsc_p = 0.1;
 
 % Get wav data
 data = wav_to_binary('austinpowers.wav');
@@ -27,12 +27,12 @@ data_col = logical(vec2mat(data_col, num_cols));
 
 % LDPC Encoder/Decoder
 hEnc = comm.LDPCEncoder(ldpc_h);
-hDec = comm.LDPCDecoder(ldpc_h);
+hDec = comm.LDPCDecoder(ldpc_h,'MaximumIterationCount', 20);
 
 % Go through perfect BPSK mod/demod - this is because the LDPC Decoder
 % requires log-likelihood ratios
-hMod = comm.PSKModulator(4, 'BitInput',true); % Don't we want (2 ... for a BPSK?
-hDemod = comm.PSKDemodulator(4, 'BitOutput',true, ...
+hMod = comm.PSKModulator(2, 'BitInput',true); % Don't we want (2 ... for a BPSK?
+hDemod = comm.PSKDemodulator(2, 'BitOutput',true, ...
             'DecisionMethod','Approximate log-likelihood ratio');
 hError = comm.ErrorRate;
 
@@ -48,6 +48,10 @@ for i = 1:ncol
     
     % Go through BSC (add bit errors)
     data_encoded_bsc = bsc(double(data_encoded), bsc_p);
+    
+    errors = data_encoded == data_encoded_bsc;
+    error_rate = length(find(errors == 0))/numel(errors)
+    
     %data_encoded_bsc = data_encoded;
     
     % Modulate
@@ -71,7 +75,12 @@ rxdata = vec2mat(rxdata, 8);
 rxwav = binary_to_wav(rxdata);
 
 fprintf('Plotting corrected audio with BSC p = %d\n', bsc_p)
-sound(rxwav, 11025);
 plot(rxwav)
+plot_title = sprintf('Audio over BSC channel with LDPC decoding (p = %.2f)', bsc_p);
+xlabel('Audio sample number')
+ylabel('Normalized audio magnitude')
+title(plot_title)
+sound(rxwav, 11025);
+
     
    

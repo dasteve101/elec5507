@@ -19,7 +19,7 @@ function plot_ebno(transition_prob, bers, uncoded_bers, code_rate)
     xlabel('Eb/No (dB)');
     ylabel('Bit Error Rate') 
     xlim([0 10])
-    ylim([10^-4 10^0]);
+    ylim([10^-6 10^0]);
     title('Bit Error Rate vs. Eb/No (dB) for LDPC code');
     hold off
     
