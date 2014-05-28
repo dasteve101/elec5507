@@ -41,9 +41,11 @@ The goal of error control coding is to encode messages for transmission with red
 
 \subsection{Background}
 
-Basics of BCH code  \\
+Bose-Chaudhuri-Hocquenghem or BCH codes are a cyclic linear block code. They are a generalization of Hamming codes to \textit{t} errors. They are constructed over a finite Galois field which is generated with a primitive polynomial. This means that every element in the field must be expressable as a power of this polynomial.
 
 \subsection{Implementation of BCH Decoder using Berlekamp's algorithm}
+
+
 
 \subsubsection{Design}
 
@@ -131,36 +133,27 @@ Gives the weight distribution of $A_0 = 1$, $A_1 = 31$, $A_2 = 465$, $A_3 = 4495
 \\
 The encoder with the generator polynomial was implemented using the cyclic properties of the code. The message, $c(X)$, is shifted by $n-k$ and divided by the generator polynomial to get the parity check bits by $b(X) = remainder[\frac{X^{n-k}c(X)}{g(X)}]$. The parity check bits are combined with the message for a systematic code. The function below shows our implementation.
 
-\lstinputlisting[language=Matlab]{../polBCHencoder.m}
+See the function \textit{polBCHencoder.m}.
 
 \subsubsection{Question 6a} \textit{Use MATLAB defined functions (eg. the ”decode” function) to decode the BCH code.}\\
 \\
 This decoder is implemented using MATLAB’s function \textit{decode()}. The matrix \textit{trt} is the syndrome decoding table calculated above using the \textit{syndtable()} function.
 
-\lstinputlisting[language=Matlab]{../matlabBCHdecode.m}
+See the function \textit{matlabBCHdecode.m}.
 
 \subsubsection{Question 6b} \textit{Design and implement a decoder using the syndrome decoding table in Task 3 for the BCH code.}\\
 \\
-The syndrome can be obtained by multiplying received codeword with the transposed parity-check matrix H. The corresponded error pattern is found by performing a look up in the trt table calculated above. The corrected code is then the codeword plus the error pattern. Our implementation is shown below.
-
-\lstinputlisting[language=Matlab]{../syndLookupDecode.m}
+The syndrome can be obtained by multiplying received codeword with the transposed parity-check matrix H. The corresponded error pattern is found by performing a look up in the trt table calculated above. The corrected code is then the codeword plus the error pattern. Our implementation is shown below. See the function \textit{syndLookupDecode.m}.
 
 \subsubsection{Question 6c} \textit{Design and implement a decoder using the Berlekamp’s iterative procedure.}\\
 \\
-The implementation of Berlekamp's iterative procedure below used different notation to the textbook specified in \textit{http://www.mathworks.com.au/help/comm/ug/error-detection-and-correction.html} allowing easier implementation of the procedure.
-
-\lstinputlisting[language=Matlab]{../berlekamp_decode.m}
+The implementation of Berlekamp's iterative procedure below used different notation to the textbook specified in \textit{http://www.mathworks.com.au/help/comm/ug/error-detection-and-correction.html} allowing easier implementation of the procedure. See the function \textit{berlekamp\_decode.m}.
 
 \subsection{Sound analysis}
 
 \subsubsection{Question 7} \textit{Simulate the implemented BCH encoder and decoder (using ANY method in Part 6) using the attached wave file (austinpowers.wav) in a BSC channel for different transition probabilities. Discuss the impact of changing different transition probability values.}\\
 \\
-The channel was simulated using the following function:
-
-\lstinputlisting[language=Matlab]{../playAudioOverBSC.m}
-
-
-Different transition probabilities were input into the function. With a transition probability of below 0.05 the sound could be heard with a little noise audible. As p increased above 0.15 the noise increased to the level where it could no longer be clearly heard. Above 0.2 it was difficult to hear anything at all other than noise.
+The channel was simulated using the function \textit{playAudioOverBSC.m}. Different transition probabilities were input into the function. With a transition probability of below 0.05 the sound could be heard with a little noise audible. As p increased above 0.15 the noise increased to the level where it could no longer be clearly heard. Above 0.2 it was difficult to hear anything at all other than noise.
 
 The plots for different p-values are shown below as a qualitative indicator of noise levels.
 
@@ -187,8 +180,7 @@ The plots for different p-values are shown below as a qualitative indicator of n
 \subsubsection{Question 8a and 8b} \textit{Simulation over BSC Simulate the BCH code in a BSC channel (you are allowed to use MATLAB defined functions) and plot the BER versus transition probability for coded and uncoded systems on the same graph. Plot BER versus $\frac{E_b}{N_0}$ for coded and uncoded systems on the same graph by assuming that the SNR ($ = \frac{E_b}{N_0}$ ) is related to the transition probability for the coded system via $X_{dB,coded} = 10 \log_{10}(\frac{[Q^{- 1} (p)]^2}{R}) $ and that for uncoded system is $X_{dB,uncoded} = 20\log_{10}(Q^{- 1} (p)) $, where $Q(x) = \frac{1}{\sqrt{2 \pi}} \int\limits_{x}\limits^{+\infty} e^{ -\frac{z^2}{2}} dz $ and $0 < p < 0.5$.}\\
 \textit{Simulation over AWGN channel with BPSK modulation $\{-1, 1\}$ Simulate the BCH code in an AWGN channel (you are allowed to use MATLAB defined functions) and plot the BER versus the signal to noise ratio (SNR) for a BPSK coded and uncoded systems on the same graph by using a hard-decision demodulator and binary decoder.}\\
 \\
-\lstinputlisting[language=Matlab]{../bch_ber_simulation.m}
-
+The implementation of the simulation is in \textit{bch\_ber\_simulation.m}.
 This produced the following plots. \\
 \begin{figure}[H]
 \centering
@@ -235,7 +227,7 @@ $10^{-6}$ & & \\
 
 \subsubsection{Question 8d} \textit{Find the asymptotic coding gain when $\frac{Eb}{N0}$ is very large from the formula which is given in the lecture notes and compare with simulation results.} \\
 \\
-Using the formula $G = 10\log(R(t+1))$ in lecture 5 for large $\frac{Eb}{N0}$ where $R = 16/31$ and $t = 3$ results in a coding gain of $G = 3.1482$ dB. Comparing this to the simulation results \textbf{...} \\
+Using the formula $G = 10\log(R(t+1))$ in lecture 5 for large $\frac{Eb}{N0}$ where $R = 16/31$ and $t = 3$ results in a coding gain of $G = 3.1482$ dB. Comparing this to the simulation results \textbf{... TODO!!!} \\
 
 \section{Discussion}
 
