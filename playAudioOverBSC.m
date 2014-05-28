@@ -5,13 +5,8 @@ data = de2bi(data);
 data = double(reshape([data; zeros(1,8)],[],16));
 errors = rand(length(data),31) < pVal;
 
-
 encoded_data_no_error = encoder(data);
 encoded_data = mod(encoder(data) + errors,2);
-
-% Check whether error rate is correct :P
-errors = encoded_data_no_error == encoded_data;
-error_rate = length(find(errors == 0))/numel(errors)
 
 decoded_data = reshape(matlabBCHdecode(encoded_data),[], 8);
 % remove the last row of zeros again

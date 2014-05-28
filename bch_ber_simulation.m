@@ -14,8 +14,9 @@ bitErrs = reshape((sum(mod(bch_decoded' + msg',2))/16)', repetitions, []);
 BER = sum(bitErrs)/length(bitErrs); % take the average
 
 figure()
-plot(pValues, BER);
+semilogy(pValues, BER);
 title('Plot of BER in BCH codes in a BSC');
+ylim([10^-6 10^0]);
 xlabel('P values');
 ylabel('BER');
 
@@ -26,9 +27,10 @@ Xuncoded = 20.*log10(sqrt(2).*erfinv(1 - 2.*pValues));
 Xcoded = Xuncoded - 10.*log10(16/31); % R = code Rate = k/n
 
 figure()
-plot([Xuncoded; Xcoded], BER);
+semilogy([Xuncoded; Xcoded], BER);
 title('Plot of BER in BCH codes in a BSC');
 legend('Uncoded', 'Coded');
+ylim([10^-6 10^0]);
 xlabel('SNR');
 ylabel('BER');
 
@@ -54,9 +56,10 @@ bitErrs = reshape((sum(mod(decoded' + msg',2))./16)', repetitions, []);
 BER2 = sum(bitErrs)/length(bitErrs); % take the average
 
 figure()
-plot(snrValues, [BER2; BER]);
+semilogy(snrValues, [BER2; BER]);
 title('Plot of BER in BCH codes in an AWGN BPSK');
 legend('Uncoded', 'Coded');
+ylim([10^-6 10^0]);
 xlabel('SNR');
 ylabel('BER');
 
