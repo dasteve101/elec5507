@@ -26,7 +26,8 @@ Stephen Tridgell - 309205867}
 \newpage
 
 \part*{Project Introduction}
-\addcontentsline{toc}{part}{Project Introduction}
+% i don't think we need this
+%\addcontentsline{toc}{part}{Project Introduction}
 
 The goal of error control coding is to encode messages for transmission with redundancy such that the receiver can correct the errors in the transmission and recover the original data. In this project, encoders and decoders will be simulated and analysed by using MATLAB. The first section involves the design and simulation of the BCH code over BSC and AWGN channels. The second section uses LDPC codes to meet the requirements of a power limited system with very high reliability. Similar simulations are run and compared with the results of the BCH code.
 
@@ -52,11 +53,12 @@ which gave a minimum distance calculation of 7.
 
 \subsubsection{Question 3} \textit{Construct the reduced syndrome lookup table for this code. You need to write a program to do this since it is difficult to do it by hand. You do not need to include the whole array in your report due to its large size. Instead, just show the sub-array consisting of the first 5 rows in your report, and include a separate text file (*.txt) enumerating all the data in your electronic submission.} \\
 \\
-Generate the syndrome lookup table by:
+Generate the full syndrome lookup table by:
 \begin{lstlisting}
 [h g k] = cyclgen(31, double(gen.x))
 trt = syndtable(h)
 \end{lstlisting}
+This table can be reduced by using the cyclic properties of the BCH code. It is calculated in the script \textit{computeReduced.m}.
 
 The first 5 rows are:\\
 \scalebox{0.7}{
@@ -64,14 +66,6 @@ The first 5 rows are:\\
 
 \hline
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-\hline
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-\hline
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-\hline
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} & \textbf{1} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-\hline
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
 \hline
 \end{tabular}
 }
@@ -93,7 +87,9 @@ The corresponding syndromes for these error patterns are:\\
 \\
 The rest of the array is in "trt.csv".
 
-\subsubsection{Question 4} \textit{Based on the standard array you obtained in task 3, find out the weight distribution of the coset leaders.}
+\subsubsection{Question 4} \textit{Based on the standard array you obtained in task 3, find out the weight distribution of the coset leaders.}\\
+\\
+For the full syndrome table the weight distribution is calculated as follows:
 \begin{lstlisting}
 weights = sum(trt')
 A0 = sum(weights == 0)
@@ -103,7 +99,7 @@ A3 = sum(weights == 3)
 A4 = sum(weights == 4)
 A5 = sum(weights == 5)
 \end{lstlisting}
-Gives the weight distribution of $A_0 = 1$, $A_1 = 31$, $A_2 = 465$, $A_3 = 4495$, $A_4 = 13020$ and $A_5 = 14756$ where $A_i$ is the number of weight $i$ errors.
+Gives the weight distribution of $A_0 = 1$, $A_1 = 31$, $A_2 = 465$, $A_3 = 4495$, $A_4 = 13020$ and $A_5 = 14756$ where $A_i$ is the number of weight $i$ errors. This is the number of possible combinations up to $A_3$ where $A_i$ = $ 31 \choose i$. Similarly the weight distribution of the reduced syndrome table is calculated. This gave the weight distribution of $A_0 = 1$, $A_1 = 1$, $A_2 = 15$, $A_3 = 145$, $A_4 = 840$ and $A_5 = 2835$. This can be verified for $A_1, A_2 and A_3$ as they contain 31 cycles of all words. Hence the total for $A_3$ is $ \frac{{31 \choose 3}}{31} = 145$.
 
 \subsubsection{Question 5} \textit{Design and implement an encoder using the generator polynomial for this BCH code.} \\
 \\
