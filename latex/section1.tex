@@ -41,15 +41,18 @@ The goal of error control coding is to encode messages for transmission with red
 
 \subsection{Background}
 
-Bose-Chaudhuri-Hocquenghem or BCH codes are a cyclic linear block code. They are a generalization of Hamming codes to \textit{t} errors. They are constructed over a finite Galois field which is generated with a primitive polynomial. This means that every element in the field must be expressable as a power of this polynomial.
+Bose-Chaudhuri-Hocquenghem or BCH codes are a cyclic linear block code. They are a generalization of Hamming codes to \textit{t} errors. They are constructed over a finite Galois field which is generated with a primitive polynomial. This means that every element in the field must be expressable as a power of this polynomial. Since the BCH codes are multile error correcting codes and a generation pf the Hamming codes, there are possible codes for m>3, and t<2^(m-1).
+and the minimum dstance d>=2t+1. The codes are formed by taking the remainder after dividing a polynomial representing our information bits by a generator polynomial. The generator is selected to give the code its characteristics. All codewords are multiples of the generator polynomial. v = c*G = c_0*g_0+c_1*g_1+c_2*g_2+⋯+c_(k-1)*g_(k-1), where G is the generator matrix. To generate a systematic BCH code, c(X) needs to be multiplied with x^(n-k), And then dividing x^(n-k) c(X) by g(X), we have x^(n-k) c(X)=a(X)g(X)+b(X), where b(X) is the remainder. So the code polynomial is given by v(X) = b(X) +x^(n-k) c(X).\\
+
 
 \subsection{Implementation of BCH Decoder using Berlekamp's algorithm}
 
-
+Berlekamp's algorithm allows one to correct errors that occur in a BCH code. If there are more errors than the code can correct, the algorithm will return a decoding failure. In BCH code, the BM algorithm finds an error locator polynomial by iterating through the syndrome polynomial; the upside is that the number of iterations linearly increases with the number of errors the code can correct. For a relatively small number of errors (3 for our code) the algorithm only needs to iterative 6 times before it stops.\\
 
 \subsubsection{Design}
 
- Blah blah blah \\
+Berlekamp's algorithm produces an error locator polynomial which is tested to find the location of the roots.
+In this project, the codeword length n=2^m-1 and the decoder operates over GF(2^m). In the very beginning, the function gf(r,m) is used to set GF field variables, and then all of the MATLAB operations we perform will automatically by performaed over GF(2^m). By using Berkelamp’s iterative algorithm, the syndromes are needed to be calculated first, s=(s_1,s_2,…,s_2t ). And then to find error location polynomial σ(X) by using Berlekamp’s iterative algorithm. After that, the error location numbers can be determined by finding the roots of σ(X). \\
  
 \subsubsection{Implementation}
 
