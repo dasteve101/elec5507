@@ -29,7 +29,7 @@ Stephen Tridgell - 309205867}
 % i don't think we need this
 %\addcontentsline{toc}{part}{Project Introduction}
 
-The goal of error control coding is to encode messages for transmission with redundancy such that the receiver can correct the errors in the transmission and recover the original data. In this project, encoders and decoders will be simulated and analysed by using MATLAB. The first section involves the design and simulation of the BCH code over BSC and AWGN channels. The second section uses LDPC codes to meet the requirements of a power limited system with very high reliability. Similar simulations are run and compared with the results of the BCH code.
+The goal of Error Control Coding is to encode messages for transmission with redundancy such that the receiver can correct the errors in the transmission and recover the original data. In this project, encoders and decoders will be simulated and analysed by using MATLAB. The first section involves the design and simulation of the BCH code over BSC and AWGN channels. The second section uses LDPC codes to meet the requirements of a power limited system with very high reliability. Similar simulations are run and compared with the results of the BCH code.
 
 \part*{Section I - BCH code}
 \addcontentsline{toc}{part}{Section I - BCH code}
@@ -119,7 +119,7 @@ The implementation of Berlekamp's iterative procedure below used different notat
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.4]{berlekamp.png}
+\includegraphics[scale=0.6]{berlekamp.png}
 \caption{Flow chart of berlekamps algorithm from www.mathworks.com.au/help/comm/ug/error-detection-and-correction.html}
 \end{figure}
 
@@ -226,14 +226,21 @@ Using the formula $G = 10\log(R(t+1))$ in lecture 5 for large $\frac{Eb}{N0}$ wh
 %% ======
 To meet these requirements an LDPC code is used
 
-For client 2, it is clear that an LDPC code will be necessary and these can provide performance that is close to the Shannon limit for an AWGN channel, compared to other modern codes. However, it is known that this is the case for very long block codes, which require computationally complex [TODOREF].
+For client 2, it is clear that an LDPC code will be necessary and these can provide performance that is close to the Shannon limit for an AWGN channel, compared to other modern codes. However, it is known that this is the case for very long block codes, which require computationally complex.
 An existing solution for digital satellite television is present in the DVB-S2
 standard, which uses LDPC as part of concatenated code with BCH coding\cite{morello2006dvb}. However,
 the drawback of this scheme is the high decoding complexity, though this can be 
-reduced somewhat by the special structure of the code [TODOREF]. Another factor to consider is the power limitation of the satellite, since a large LDPC block code will also entail high coding complexity, more hardware gates and thus more power. An alternative code choice
-is the (1152, 2304) LDPC block code used in IEEE-802.16-2005, also known as WiMax [TODOREF]. This code is also irregular, which is known to exhibit superior performance over regular LDPC codes.
+reduced somewhat by the special structure of the code . Another factor to consider is the power limitation of the satellite, since a large LDPC block code will also entail high coding complexity, more hardware gates and thus more power. An alternative code choice
+is the (1152, 2304) LDPC block code used in IEEE-802.16-2005, also known as WiMax. This code is also irregular, which is known to exhibit superior performance over regular LDPC codes.
 
-TODO: Expand on justification, summarize into table
+Another aspect of LDPC is that it requires iterative decoding. In general the BER improves with the number of iterations. To model the low complexity desired, the number of iterations used throughout the report is 5.
+
+\begin{itemize}
+\item Code Type: LDPC
+\item Code Size: (1152, 2304)
+\item Code Rate: 0.5
+\item Density:  0.002748
+\end{itemize}
 
 \subsection{Sound analysis}
 
@@ -263,7 +270,7 @@ The code was simulated for the transition probabilities p = \{0.01, 0.05, 0.1\}.
 \caption{LDPC Audio over BSC (p = 0.1)}
 \end{figure}
 
-As the bit errors increase due to the transition probability, the noise becomes more prevalent. However, it is improved relative to BCH in the case of p = 0.05, showing LDPC has superior performance in this regard compared with BCH. However, there is not much difference in the case of p = 0.1, showing that the code has reached it's performance limitation for the particular channel, which is due to effective hard-decision decoding that is involved in a BSC channel. TODO: is it?
+As the bit errors increase due to the transition probability, the noise becomes more prevalent. However, it is improved relative to BCH in the case of p = 0.05, showing LDPC has superior performance in this regard compared with BCH. However, there is not much difference in the case of p = 0.1, showing that the code has reached it's performance limitation for the particular channel, which is due to effective hard-decision decoding that is involved in a BSC channel.
 
 \subsubsection{Question 3a}\textit{Simulate the chosen code in a BSC channel (you are allowed to use MATLAB defined functions) and plot the BER versus transition probability for coded and uncoded systems on the same graph. Plot BER versus $\frac{E_b}{N_0}$ for coded and uncoded systems on the same graph by assuming that the SNR ($ = \frac{E_b}{N_0}$ ) is related to the transition probability for the coded system via $X_{dB,coded} = 10 \log_{10}(\frac{[Q^{-1} (p)]^2}{R}) $ and that for uncoded system is $X_{dB,uncoded} = 20\log_{10}(Q^{-1} (p)) $, where $Q(x) = \frac{1}{\sqrt{2 \pi}} \int\limits_{x}\limits^{+\infty} e^{ -\frac{z^2}{2}} dz $ and $0 < p < 0.5$.}
 
@@ -304,29 +311,33 @@ As the bit errors increase due to the transition probability, the noise becomes 
 \centering
 \begin{tabular}{| c | c | c | c |}
 \hline
-BER &  Coding Gain (Hard decision) & Coding Gain (Soft decision)  & Coding Gain (BSC\\
+BER &  Coding Gain (Hard decision) & Coding Gain (Soft decision)  & Coding Gain (BSC)\\
 \hline
-$10^{-2}$ & & & \\
+$10^{-2}$ & 0 & 6  & 3.5\\
 \hline
-$10^{-3}$ & & & \\
+$10^{-3}$ & 0 & 7.8 & 5.5\\
 \hline
-$10^{-4}$ & & & \\
+$10^{-4}$ & 0 & 8 & NA \\
 \hline
-$10^{-5}$ & & & \\
+$10^{-5}$ & 0 & 9.25 & NA \\
 \hline
-$10^{-6}$ & & & \\
+$10^{-6}$ & 0 & 9 & NA \\
 \hline
 \end{tabular}
 \caption{Coding gain for LDPC}
 \end{table}
 
-\subsubsection{Question 3d} \textit{Find the asymptotic coding gain when $\frac{Eb}{N0}$ is very large from the formula which is given in the lecture notes and compare with simulation results.} \\
-\\
-Answer here \\
+Due to lack of simulation time, the coding gain for $10^-4$, $10^-5$, and $10^-6$ was unable
+to be calculated for BSC; however, it is very high. The highest performance gain is seen in soft-decision decoding. This is due to the algorithm implemented by the MATLAB Communications Toolbox LDPC decoder: it uses the iterative message passing algorithm which makes use of soft information in the form of log-likelihood ratios. On the other hand, the result for hard-decision decoding seems erroneous due to the algorithm requiring soft input. For the BSC channel,  soft input was simulated by running the BSC-corrupted data through a noiseless BPSK mod/demod, allowing log-likelihood ratios to be outputted.
+ 
+
+%\subsubsection{Question 3d} \textit{Find the asymptotic coding gain when $\frac{Eb}{N0}$ is very large from the formula which is given in the lecture notes and compare with simulation results.} \\
+%\\
+%Answer here \\
 
 \subsubsection{Question 4} \textit{Discuss the advantages/disadvantages of the code chosen in this section with the BCH code in Section 1 (eg. complexity, coding gain, efficiency)}\\
 \\
-BCH codes have significantly lower complexity than the LDPC as BCH has the properties that it is a cyclic, linear block code. This allows various decoding methods depending on resources availible. BCH can also be systematic allowing for simpler decoding methods. LDPC codes are additionally large in size generally, compared to the BCH codes. This means that there is greater latency in the delivery of data. LDPC however, performs significantly better than BCH in terms of coding gain ... etc
+BCH codes have significantly lower complexity than the LDPC as BCH has the properties that it is a cyclic, linear block code. This allows various decoding methods depending on resources available. BCH can also be made systematic allowing for simpler decoding methods. LDPC codes are additionally large in size generally, compared to the BCH codes. This means that there is greater latency in the delivery of data, depending on code rate. LDPC however, performs significantly better than BCH in terms of coding gain with it's ability to approach the Shannon capacity. A further drawback of LDPC is the "error floor", where the BER does not improve even though the SNR does. One technique to fix this is to concatenate LDPC and BCH, allowing BCH to fix errors caused by the error floor. In general, there is a tradeoff involved in using LDPC; high complexity, low efficiency but higher coding gain. Nowadays, it is worth it because of the extreme power limitation in applications such as deep space communications.
 
 \bibliographystyle{plain}
 \bibliography{refs}

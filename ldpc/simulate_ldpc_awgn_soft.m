@@ -9,7 +9,7 @@ load ldpc_h
 ldpc_h = sparse(ldpc_h);
 
 % Generate EbNo's
-ebnos = 0:15;
+ebnos = -3:10;
 
 % LDPC Encoder/Decoder
 hEnc = comm.LDPCEncoder(ldpc_h);
@@ -37,7 +37,7 @@ for e = ebnos
     % Create noisy channel using EbNo.
     hChan = comm.AWGNChannel('NoiseMethod', 'Signal to noise ratio (SNR)', 'SNR', e);
     
-    while i <  1000
+    while i <  10000
         
         % Generate data
         data = logical(randi([0 1], 1152, 1));

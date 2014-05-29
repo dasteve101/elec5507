@@ -58,6 +58,6 @@ end
 disp('Plotting BER vs p ...')
 plot_ber(ps, bers);
 disp ('Plotting BER vs EBNo ...')
-plot_ebno(ps, bers, ps, 0.5);
+plot_ebno(ps, bers, ps, 1);
 
 
