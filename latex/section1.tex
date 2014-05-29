@@ -175,27 +175,29 @@ This produced the following plots. \\
 \includegraphics[scale=0.5]{plotBER_AWGN.jpg} 
 \caption{Bit Error Rate vs. SNR for BCH over AWGN}
 \end{figure}
-\textbf{TODO: RESAVE AWGN plot} 
 
 \subsubsection{Question 8c} \textit{Draw a table detailing the coding gain for BER$= [10^{-2}, 10^{-3}, 10^{-4} , 10^{-5} , 10^{-6} ]$ by reading the differences between the BER curves for BPSK coded and uncoded systems which have been obtained from simulations in part (a) and (b).} \\
 \\
+The following values were obtained from the plot where possible. For the smaller values of $10^{-6}$ and $10^{-5}$ the points in the table were obtain by running it for individual points. For a transition probability of 0.0037 in the BSC a BER of approximately $10^{-6}$ was obtained for the coded signal. A transition probability of $10^{-6}$ obviously gives a BER of $10^-6$ for the uncoded signal. This gives $X_{db,coded} = 11.42 $ dB and $X_{db,uncoded} = 13.54 $ dB giving a coding gain of $2.11$ dB. Similarly a transition probability of 0.007 in the BSC a BER of approximately $10^{-6}$ was obtained for the coded signal. A transition probability of $10^{-5}$ obviously gives a BER of $10^-5$ for the uncoded signal. This gives $X_{db,coded} =  10.68$ dB and $X_{db,uncoded} = 12.596 $ dB giving a coding gain of $1.92$ dB. 
+
+For a SNR of 8.3 dB in the AWGN a BER of approximately $10^{-6}$ was obtained for the coded signal. A SNR of 13.5 dB gave a BER of $10^{-6}$ for the uncoded signal. This gives a coding gain of $5.2$ dB. Similarly, For a SNR of 7.5 dB in the AWGN a BER of approximately $10^{-5}$ was obtained for the coded signal. A SNR of 12.5 dB gave a BER of $10^{-5}$ for the uncoded signal. This gives a coding gain of $5$ dB. Additionally a SNR of 11.1 dB gave approximately a BER of $10^{-4}$ for the uncoded signal and a SNR of 9.8 dB gave a BER of $10^{-3}$. The rest of the values were obtained from the plot.
+
 \begin{table}[H]
 \centering
 \begin{tabular}{| c | c | c |}
 \hline
 BER & Coding Gain (Hard decision) & Coding Gain (BSC) \\
 \hline
-$10^{-2}$ & & \\
+$10^{-2}$ & 3 & 0 \\
 \hline
-$10^{-3}$ & & \\
+$10^{-3}$ & 3.8 & 1.3 \\
 \hline
-$10^{-4}$ & & \\
+$10^{-4}$ & 4.1 & 1.7  \\
 \hline
-$10^{-5}$ & & \\
+$10^{-5}$ & 5 & 1.92 \\
 \hline
-$10^{-6}$ & & \\
+$10^{-6}$ & 5.2 & 2.11 \\
 \hline
-
 \end{tabular}
 \caption{Coding gain for BCH}
 \end{table}
