@@ -103,15 +103,15 @@ Gives the weight distribution of $A_0 = 1$, $A_1 = 31$, $A_2 = 465$, $A_3 = 4495
 
 \subsubsection{Question 5} \textit{Design and implement an encoder using the generator polynomial for this BCH code.} \\
 \\
-The encoder with the generator polynomial was implemented using the cyclic properties of the code. The message, $c(X)$, is shifted by $n-k$ and divided by the generator polynomial to get the parity check bits by $b(X) = remainder[\frac{X^{n-k}c(X)}{g(X)}]$. The parity check bits are combined with the message for a systematic code. The function \textit{polBCHencoder.m} implements the generator polynomial method of decoding the BCH code.
+The encoder with the generator polynomial was implemented using the cyclic properties of the code. The message, $c(X)$, is shifted by $n-k$ and divided by the generator polynomial to get the parity check bits by $b(X) = remainder[\frac{X^{n-k}c(X)}{g(X)}]$. The parity check bits are combined with the message for a systematic code by taking $v(x) = [b(x) c(x)]$. The function \textit{polBCHencoder.m} implements the generator polynomial method of decoding the BCH code.
 
 \subsubsection{Question 6a} \textit{Use MATLAB defined functions (eg. the ”decode” function) to decode the BCH code.}\\
 \\
-This decoder is implemented using MATLAB’s function \textit{decode()}. The matrix \textit{trt} is the syndrome decoding table calculated above using the \textit{syndtable()} function. This decode method is based on the block properties of the code. The syndromes are calculated and the most likely codeword is decoded to by looking up the minimum weight. Th implementation is in the function \textit{matlabBCHdecode.m}.
+This decoder is implemented using MATLAB’s function \textit{decode()}. The matrix \textit{trt} is the full syndrome decoding table calculated above using the \textit{syndtable()} function. This decode method is based on the linear block properties of the code. The syndromes are calculated and the most likely codeword is decoded to by looking up the minimum weight. The implementation is in the function \textit{matlabBCHdecode.m}.
 
 \subsubsection{Question 6b} \textit{Design and implement a decoder using the syndrome decoding table in Task 3 for the BCH code.}\\
 \\
-The syndrome can be obtained by multiplying received codeword with the transposed parity-check matrix H. The corresponded error pattern is found by performing a look up in the trt table calculated above. The corrected code is then the codeword plus the error pattern. Our implementation is shown in the function \textit{syndLookupDecode.m}. The overhead of the decoder can be reduced by significantly reducing the size of the lookup table by using cyclic properties of the code. This was implemented using the reduced lookup table calculated previously. The recieved vector is shifted until its syndrome is recognized in the table. The error locations are then looked up in the table. The implementation of this is in \textit{syndReducedLookupDecode.m}
+The syndrome can be obtained by multiplying received codeword with the transposed parity-check matrix H. The corresponded error pattern is found by performing a look up in the trt table calculated above. The corrected code is then the codeword plus the error pattern. Our implementation is shown in the function \textit{syndLookupDecode.m}. The memory overhead of the decoder can be reduced by significantly reducing the size of the lookup table by using cyclic properties of the code. This was implemented using the reduced lookup table calculated previously. The recieved vector is shifted until its syndrome is recognized in the table. The error locations are then looked up in the table and used to correct the codeword. The implementation of this decoder is in \textit{syndReducedLookupDecode.m}
 
 \subsubsection{Question 6c} \textit{Design and implement a decoder using the Berlekamp’s iterative procedure.}\\
 \\
@@ -123,7 +123,7 @@ The implementation of Berlekamp's iterative procedure below used different notat
 \caption{Flow chart of berlekamps algorithm from www.mathworks.com.au/help/comm/ug/error-detection-and-correction.html}
 \end{figure}
 
-This differs from the textbook method in its labeling of variables and a slight modification on the calculation of $\sigma_{\rho}$. It instead computes the this as the variable D with $d_{\rho}$ already divided through. This allows for easier implementation in software.
+This differs from the textbook method in its labeling of variables and a slight modification on the calculation of $\sigma_{\rho}$. It instead computes the this as the variable D with $d_{\rho}$ already divided through. This allows for easier implementation in software when multiplying the polynomials.
 
 \subsection{Sound analysis}
 
@@ -157,7 +157,8 @@ The plots for different p-values are shown below as a qualitative indicator of n
 \textit{Simulation over AWGN channel with BPSK modulation $\{-1, 1\}$ Simulate the BCH code in an AWGN channel (you are allowed to use MATLAB defined functions) and plot the BER versus the signal to noise ratio (SNR) for a BPSK coded and uncoded systems on the same graph by using a hard-decision demodulator and binary decoder.}\\
 \\
 The implementation of the simulation is in \textit{bch\_ber\_simulation.m}.
-This produced the following plots. \\
+This produced the following plots. The full range to $10^{-6}$ BER was not calculated as there were memory limitations. Instead specific points of interest we calculated such as $10^{-4}$, $10^{-5}$ and $10^{-6}$ in addition to these plots for the subsequent table.\\
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{plotBER_BSC_pvals.jpg} \\
@@ -204,7 +205,7 @@ $10^{-6}$ & 5.2 & 2.11 \\
 
 \subsubsection{Question 8d} \textit{Find the asymptotic coding gain when $\frac{Eb}{N0}$ is very large from the formula which is given in the lecture notes and compare with simulation results.} \\
 \\
-Using the formula $G = 10\log(R(t+1))$ in lecture 5 for large $\frac{Eb}{N0}$ where $R = 16/31$ and $t = 3$ results in a coding gain of $G = 3.1482$ dB. Comparing this to the simulation results \textbf{... TODO!!!} \\
+Using the formula $G = 10\log(R(t+1))$ in lecture 5 for large $\frac{Eb}{N0}$ where $R = 16/31$ and $t = 3$ results in a coding gain of $G = 3.1482$ dB. Comparing this to the simulation results the BSC and the hard decision decoded AWGN channel strangely do not match. Additionally the asymptotic coding gain is less than the hard decision decoded value at $10^{-6}$ BER. We are unsure why this is the case as our simulation results have been checked.\\
 
 % =========
 % SECTION 2
@@ -335,21 +336,41 @@ BCH codes have significantly lower complexity than the LDPC as BCH has the prope
 
 \part*{Appendix - Matlab code}
 
+\textit{File bch\_ber\_simulation.m} 
 \lstinputlisting{../bch_ber_simulation.m}
+\textit{File computeReduced.m} 
 \lstinputlisting{../computeReduced.m} 
+\textit{File matlabBCHdecode.m} 
 \lstinputlisting{../matlabBCHdecode.m} 
+\textit{File polBCHencoder.m} 
 \lstinputlisting{../polBCHencoder.m} 
+\textit{File syndReducedLookupDecode.m} 
 \lstinputlisting{../syndReducedLookupDecode.m}
+\textit{File berlekamp\_decode.m} 
 \lstinputlisting{../berlekamp_decode.m} 
+\textit{File encoder.m} 
 \lstinputlisting{../encoder.m} 
+\textit{File playAudioOverBSC.m} 
 \lstinputlisting{../playAudioOverBSC.m} 
+\textit{File syndLookupDecode.m} 
 \lstinputlisting{../syndLookupDecode.m}
+\textit{File binary\_to\_wav.m} 
 \lstinputlisting{../ldpc/binary_to_wav.m}
+\textit{File plot\_ebno.m } 
 \lstinputlisting{../ldpc/plot_ebno.m  } 
-\lstinputlisting{../ldpc/simulate_ldpc_awgn_hard.m  } \lstinputlisting{../ldpc/simulate_ldpc_bsc.m  } 
+\textit{File simulate\_ldpc\_awgn\_hard.m} 
+\lstinputlisting{../ldpc/simulate_ldpc_awgn_hard.m  } 
+\textit{File simulate\_ldpc\_bsc.m} 
+\lstinputlisting{../ldpc/simulate_ldpc_bsc.m  } 
+\textit{File wav\_to\_binary.m} 
 \lstinputlisting{../ldpc/wav_to_binary.m}
+\textit{File plot\_ber.m } 
 \lstinputlisting{../ldpc/plot_ber.m } 
+\textit{File qpsk\_test.m} 
 \lstinputlisting{../ldpc/qpsk_test.m  } 
-\lstinputlisting{../ldpc/simulate_ldpc_awgn_soft.m  } \lstinputlisting{../ldpc/simulate_ldpc_wav.m}
+\textit{File simulate\_ldpc\_awgn\_soft.m } 
+\lstinputlisting{../ldpc/simulate_ldpc_awgn_soft.m  } 
+\textit{File simulate\_ldpc\_wav.m} 
+\lstinputlisting{../ldpc/simulate_ldpc_wav.m}
 
 \end{document}
