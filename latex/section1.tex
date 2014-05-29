@@ -17,9 +17,9 @@ Stephen Tridgell - 309205867}
 
 \maketitle
 \newpage
-\tableofcontents
-\listoffigures
-\listoftables
+%\tableofcontents
+%\listoffigures
+%\listoftables
 
 
 \lstset{language=Matlab, frame=single, breaklines=true, keepspaces=true, columns=flexible, basicstyle=\ttfamily\footnotesize}
@@ -120,10 +120,10 @@ The implementation of Berlekamp's iterative procedure below used different notat
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.4]{berlekamp.png}
-\caption{Flow chart of berlekamps from www.mathworks.com.au/help/comm/ug/error-detection-and-correction.html}
+\caption{Flow chart of berlekamps algorithm from www.mathworks.com.au/help/comm/ug/error-detection-and-correction.html}
 \end{figure}
 
-This differs from the textbook method in its labeling of variables, but additionally a slight modification on the calculation of $\sigma_{\rho}$. It instead computes the this as the variable D with $d_{\rho}$ alread divided through. This allows for easier implementation in software.
+This differs from the textbook method in its labeling of variables and a slight modification on the calculation of $\sigma_{\rho}$. It instead computes the this as the variable D with $d_{\rho}$ already divided through. This allows for easier implementation in software.
 
 \subsection{Sound analysis}
 
